@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <title>KHAN880 - Official Store</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 👑 প্রফেশনাল হেডার */
+        .main-header {
+            background-color: #ffffff;
+            padding: 12px 5%;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 30px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-area { display: flex; flex-direction: column; gap: 4px; }
+        .logo-area img { width: 140px; height: auto; display: block; }
+        .bangla-clock-date { font-size: 12px; color: #555; font-weight: 500; background: #f1f3f5; padding: 2px 8px; border-radius: 4px; display: inline-block; width: max-content; }
+        
+        /* 🔍 হেডার সার্চ বক্স */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            background: #ffffff;
+            padding: 4px;
+            border-radius: 8px;
+            border: 2px solid #79c343;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 6px 12px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+        }
+
+        /* 🎯 সজেস্ট ড্রপডাউন লিস্ট */
+        .suggestion-list {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 2000;
+            display: none;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background-color: #f1f3f5; color: #79c343; }
+        
+        .nav-buttons { display: flex; align-items: center; gap: 12px; }
+        
+        .home-button { background-color: transparent; color: #e60000; font-size: 15px; font-weight: bold; padding: 10px 22px; border: 2px solid #e60000; border-radius: 5px; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
+        .home-button:hover { background-color: #e60000; color: white; }
+
+        .text-social-button { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            background-color: #ffffff; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            transition: all 0.3s ease; 
+        }
+        .text-social-button.facebook { color: #1877f2; border-color: #1877f2; }
+        .text-social-button.facebook:hover { background-color: #1877f2; color: white; }
+        .text-social-button.whatsapp { color: #25d366; border-color: #25d366; }
+        .text-social-button.whatsapp:hover { background-color: #25d366; color: white; }
+
+        .ticker-wrap { width: 100%; background-color: #e60000; box-shadow: 0px 2px 5px rgba(0,0,0,0.1); overflow: hidden; padding: 10px 0; }
+        .ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: marquee 30s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 2rem; font-size: 16px; font-weight: bold; color: #ffffff; }
+        .ticker-item a { color: #ffffff; text-decoration: none; }
+        @keyframes marquee { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        /* 📁 PRODUCT CATEGORY STYLE */
+        .category-section {
+            padding: 25px 5% 10px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 90%;
+            box-sizing: border-box;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 15px;
+        }
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 5px;
+            background-color: #79c343;
+            border-radius: 4px;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        .category-card {
+            background: #ffffff;
+            border: 1px solid #eaeaea;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+        }
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: #79c343;
+            box-shadow: 0 5px 15px rgba(121, 195, 67, 0.15);
+        }
+        .category-icon { font-size: 32px; margin-bottom: 8px; }
+        .category-name { font-size: 14px; font-weight: 600; color: #333; }
+
+        /* 📦 লোডার স্টাইল */
+        #full-screen-loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.6s ease;
+        }
+        #full-screen-loader.fade-out { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        
+        .delivery-animation-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 280px;
+            height: 100px;
+            position: relative;
+        }
+        .loader-shop { font-size: 45px; z-index: 2; }
+        .loader-customer { font-size: 45px; z-index: 2; }
+        .loader-parcel {
+            font-size: 28px;
+            position: absolute;
+            left: 20px;
+            bottom: 30px;
+            animation: buyAndHandover 2s infinite ease-in-out;
+            z-index: 3;
+        }
+        .loader-text {
+            margin-top: 15px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #79c343;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes buyAndHandover {
+            0% { transform: scale(0.3) translate(0, 0); opacity: 0; }
+            15% { transform: scale(1.1) translate(10px, -20px); opacity: 1; }
+            30% { transform: scale(1) translate(30px, 0); }
+            75% { transform: scale(1) translate(190px, -5px); opacity: 1; }
+            90% { transform: scale(1.1) translate(210px, 10px); opacity: 0.5; }
+            100% { transform: scale(0) translate(220px, 15px); opacity: 0; }
+        }
+
+        /* 🛍️ প্রোডাক্ট গ্রিড */
+        .main-content { flex: 1; padding: 20px 5% 40px 5%; max-width: 1200px; margin: 0 auto; width: 90%; box-sizing: border-box; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        
+        .product-card {
+            background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #eaeaea;
+        }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+
+        .product-img-box { width: 100%; height: 280px; background-color: #fcfcfc; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid #f5f5f5; padding: 10px; box-sizing: border-box; }
+        .product-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.5s ease; }
+        .product-card:hover .product-img-box img { transform: scale(1.04); }
+
+        .product-details { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-name { font-size: 17px; font-weight: bold; color: #2c3e50; margin: 0 0 8px 0; line-height: 1.4; }
+        .product-description { font-size: 13px; color: #7f8c8d; line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
+        
+        .product-footer { padding: 0 15px 15px 15px; }
+        .product-price { font-size: 21px; font-weight: 700; color: #e60000; margin-bottom: 12px; }
+        
+        .card-order-btn { width: 100%; display: block; background-color: #79c343; color: white; border: none; padding: 11px; text-align: center; font-weight: bold; font-size: 14px; border-radius: 6px; cursor: pointer; text-decoration: none; transition: background 0.2s; box-shadow: 0 3px 6px rgba(121,195,67,0.15); box-sizing: border-box; }
+        .card-order-btn:hover { background-color: #63a435; }
+
+        .error-message { text-align: center; font-size: 16px; color: #666; grid-column: 1 / -1; padding: 60px 0; }
+
+        /* 👑 এডমিন পোর্টাল ড্যাশবোর্ড */
+        .admin-portal-section {
+            display: none;
+            background: #ffffff;
+            border: 2px dashed #79c343;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 950px;
+            margin: 30px auto;
+            width: 95%;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .portal-title { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #f1f3f5; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
+        .close-portal-btn { background: #e60000; color: #fff; border: none; padding: 4px 10px; font-size: 12px; border-radius: 4px; cursor: pointer;}
+        
+        .admin-search-box { display: flex; gap: 10px; margin-bottom: 25px; max-width: 500px; }
+        .admin-search-input { flex: 1; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; font-size: 15px; outline: none; }
+        .admin-search-input:focus { border-color: #79c343; }
+        .admin-search-btn { background: #79c343; color: white; border: none; padding: 0 25px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .admin-search-btn:hover { background: #63a435; }
+        
+        .manpower-form { display: none; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: #495057; }
+        .form-group input { padding: 10px; border: 1px solid #ced4da; border-radius: 6px; font-size: 14px; outline: none; }
+        .form-group input:focus { border-color: #79c343; }
+        .form-group input[readonly] { background-color: #e9ecef; color: #6c757d; cursor: not-allowed; }
+        
+        /* 🎨 নরমাল হোয়াইট স্টাইল */
+        .future-field input { background-color: #ffffff; border-color: #ced4da; }
+        .future-field label { color: #495057; }
+
+        .admin-save-btn { grid-column: 1 / -1; margin-top: 15px; background: #2b8a3e; color: white; border: none; padding: 12px; font-weight: bold; font-size: 15px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .admin-save-btn:hover { background: #237032; }
+
+        /* 🌐 স্টাইলিশ কম্বাইন্ড ফুটার (Footer + About Us) */
+        .main-footer { 
+            background-color: #1a252f; 
+            color: #ffffff; 
+            padding: 45px 5% 25px 5%; 
+            margin-top: auto; 
+            border-top: 4px solid #79c343; 
+            box-sizing: border-box; 
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 30px;
+        }
+        .footer-about {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-about h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #79c343;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .footer-about p {
+            font-size: 14px;
+            color: #bdc3c7;
+            line-height: 1.7;
+            margin: 0;
+            max-width: 550px;
+        }
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        .footer-contact h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #79c343;
+            margin: 0;
+        }
+        .footer-info-link {
+            font-size: 15px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .footer-info-link:hover {
+            color: #79c343;
+        }
+        .admin-login-btn { 
+            background: #79c343; 
+            color: #ffffff; 
+            padding: 8px 18px; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 13px; 
+            cursor: pointer; 
+            border: none; 
+            transition: background 0.2s;
+        }
+        .admin-login-btn:hover {
+            background: #63a435;
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        /* 📝 পপআপ অর্ডার ফর্ম */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .modal-box { background: #ffffff; padding: 25px; border-radius: 12px; width: 90%; max-width: 420px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .modal-box h3 { margin-top: 0; color: #2c3e50; font-size: 20px; border-bottom: 2px solid #f1f3f5; padding-bottom: 10px; margin-bottom: 15px; }
+        .modal-input { width: 100%; padding: 10px 12px; margin-bottom: 12px; border: 1px solid #ced4da; border-radius: 6px; font-size: 14px; outline: none; box-sizing: border-box; }
+        .modal-textarea { width: 100%; padding: 10px 12px; margin-bottom: 15px; border: 1px solid #ced4da; border-radius: 6px; font-size: 14px; outline: none; box-sizing: border-box; height: 80px; resize: none; }
+        .modal-btn-confirm { width: 100%; padding: 12px; background-color: #79c343; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .modal-note-box { background-color: #fff5f5; border-left: 4px solid #e60000; padding: 10px 12px; margin: 15px 0; border-radius: 4px; font-size: 13px; color: #c92a2a; font-weight: 600; text-align: left; }
+        .modal-btn-cancel { width: 100%; padding: 11px; background-color: transparent; color: #7f8c8d; border: 1px solid #ced4da; border-radius: 6px; font-size: 14px; margin-top: 5px; cursor: pointer; }
+
+        /* 🔒 এডমিন পাসওয়ার্ড মডাল স্টাইল */
+        .password-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .password-input-container .modal-input {
+            margin-bottom: 0;
+            padding-right: 40px;
+        }
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #7f8c8d;
+            padding: 0;
+            user-select: none;
+        }
+
+        @media (max-width: 800px) {
+            .main-header { display: flex; flex-direction: column; gap: 15px; padding: 15px 20px; }
+            .logo-area { align-items: center; }
+            .search-wrapper { width: 100%; max-width: 100%; }
+            .nav-buttons { width: 100%; justify-content: center; gap: 8px; }
+            .category-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .product-grid { grid-template-columns: 1fr; gap: 20px; }
+            .manpower-form { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .footer-about p { max-width: 100%; }
+            .footer-contact { align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 📦 ফুল স্ক্রিন হ্যান্ডওভার অ্যানিমেটেড লোডার -->
+    <div id="full-screen-loader">
+        <div class="delivery-animation-box">
+            <div class="loader-shop">🛒</div>
+            <div class="loader-parcel">📦</div>
+            <div class="loader-customer">🙋‍♂️</div>
+        </div>
+        <div class="loader-text">KHAN880 থেকে প্রোডাক্ট আপনার কাছে পৌঁছাচ্ছে...</div>
+    </div>
+
+    <!-- 👑 মেইন হেডার -->
+    <header class="main-header">
+        <div class="logo-area">
+            <a href="index.html"><img src="logo.png" alt="KHAN880 Logo"></a>
+            <div id="banglaClock" class="bangla-clock-date">লোডিং...</div>
+        </div>
+
+        <div class="search-wrapper">
+            <div class="search-box">
+                <input type="text" class="search-input" id="search-input" placeholder="এখানে প্রোডাক্টের নাম লিখে খুঁজুন..." autocomplete="off">
+            </div>
+            <ul class="suggestion-list" id="suggestion-list"></ul>
+        </div>
+
+        <nav class="nav-buttons">
+            <a href="index.html" class="home-button">Home</a>
+            <a href="https://www.facebook.com/profile.php?id=61570781964056" target="_blank" class="text-social-button facebook">Facebook</a>
+            <a href="https://wa.me/8801952197007" target="_blank" class="text-social-button whatsapp">WhatsApp</a>
+        </nav>
+    </header>
+
+    <!-- 📣 নোটিশ স্ক্রল বার -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="ticker-item">🔥 ধামাকা অফার! যেকোনো প্রোডাক্ট অর্ডারে পাচ্ছেন আকর্ষণীয় ডিসকাউন্ট!</span>
+            <span class="ticker-item">🚚 সারা বাংলাদেশে ক্যাশ অন ডেলিভারি সুবিধা!</span>
+            <span class="ticker-item">📞 কল করুন: <a href="tel:+8801952197007" style="color:white;">+880 1952-197007</a></span>
+        </div>
+    </div>
+
+    <!-- 🖥️ এডমিন পোর্টাল ড্যাশবোর্ড -->
+    <section id="adminPortal" class="admin-portal-section">
+        <div class="portal-title">
+            <span>⚙️ Manpower Admin Dashboard</span>
+            <button class="close-portal-btn" onclick="closeAdminPortal()">Close [X]</button>
+        </div>
+        
+        <div class="admin-search-box">
+            <input type="text" id="passportSearchInput" class="admin-search-input" placeholder="Passport Number">
+            <button onclick="searchPassportData()" class="admin-search-btn">Search</button>
+        </div>
+
+        <div id="manpowerForm" class="manpower-form">
+            <input type="hidden" id="sheetRowIndex">
+            <div class="form-group"><label>Name</label><input type="text" id="mpName"></div>
+            <div class="form-group"><label>Passport Number (Read Only)</label><input type="text" id="mpPassport" readonly></div>
+            <div class="form-group"><label>Agent</label><input type="text" id="mpAgent"></div>
+            <div class="form-group"><label>Company Name</label><input type="text" id="mpCompany"></div>
+            <div class="form-group"><label>Medical Status</label><input type="text" id="mpMedical"></div>
+            <div class="form-group"><label>Visa</label><input type="text" id="mpVisa"></div>
+            <div class="form-group"><label>Flight Date</label><input type="text" id="mpFlight"></div>
+            <div class="form-group"><label>Payment</label><input type="text" id="mpPayment"></div>
+            
+            <!-- ✍️ Remarks ও পরবর্তী ইনপুট ফিল্ড সমূহ -->
+            <div class="form-group future-field"><label>Remarks</label><input type="text" id="mpField1"></div>
+            <div class="form-group future-field"><label>Field 2</label><input type="text" id="mpField2"></div>
+            <div class="form-group future-field"><label>Field 3</label><input type="text" id="mpField3"></div>
+            <div class="form-group future-field"><label>Field 4</label><input type="text" id="mpField4"></div>
+            <div class="form-group future-field"><label>Field 5</label><input type="text" id="mpField5"></div>
+            
+            <button onclick="updatePassportData()" class="admin-save-btn">Save & Update to Google Sheet</button>
+        </div>
+    </section>
+
+    <!-- 📁 প্রোডাক্ট ক্যাটাগরি ফিল্টার -->
+    <section class="category-section">
+        <div class="section-title">প্রোডাক্ট ক্যাটাগরি</div>
+        <div class="category-grid">
+            <div class="category-card" onclick="filterByCategory('Gadget')"><div class="category-icon">🎧</div><div class="category-name">গ্যাজেটস</div></div>
+            <div class="category-card" onclick="filterByCategory('Watch')"><div class="category-icon">⌚</div><div class="category-name">স্মার্ট ওয়াচ</div></div>
+            <div class="category-card" onclick="filterByCategory('Trimmer')"><div class="category-icon">🪒</div><div class="category-name">ট্রিমার</div></div>
+            <div class="category-card" onclick="filterByCategory('Earbuds')"><div class="category-icon">🔌</div><div class="category-name">এয়ারবাডস</div></div>
+            <div class="category-card" onclick="filterByCategory('Trending')"><div class="category-icon">🔥</div><div class="category-name">ট্রেন্ডিং</div></div>
+            <div class="category-card" onclick="filterByCategory('all')"><div class="category-icon">✨</div><div class="category-name">সব প্রোডাক্ট</div></div>
+        </div>
+    </section>
+
+    <!-- 🛍️ প্রোডাক্ট ডিসপ্লে এরিয়া -->
+    <main class="main-content">
+        <div class="product-grid" id="product-container"></div>
+    </main>
+
+    <!-- 🛒 অর্ডার করার পপআপ উইন্ডো -->
+    <div id="orderModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🛒 অর্ডার কনফার্ম করুন</h3>
+            <input type="hidden" id="productName">
+            <input type="hidden" id="productPrice">
+            <input type="hidden" id="productId">
+            <input type="text" id="custName" class="modal-input" placeholder="আপনার নাম লিখুন">
+            <input type="tel" id="custPhone" class="modal-input" placeholder="মোবাইল নম্বর লিখুন">
+            <input type="text" id="custDistrict" class="modal-input" placeholder="জেলা">
+            <input type="text" id="custUpazila" class="modal-input" placeholder="উপজেলা">
+            <textarea id="custNote" class="modal-textarea" placeholder="বিশেষ নির্দেশনা (ঐচ্ছিক)"></textarea>
+            <button onclick="sendToWhatsApp()" class="modal-btn-confirm">Confirm Order via WhatsApp</button>
+            <div class="modal-note-box">⚠️ নোট: ডেলিভারি চার্জ আগে পেমেন্ট করতে হবে।</div>
+            <button onclick="closeModal()" class="modal-btn-cancel">Cancel</button>
+        </div>
+    </div>
+
+    <!-- 🔒 কাস্টম এডমিন লগইন পপআপ উইন্ডো -->
+    <div id="adminLoginModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🔒 এডমিন লগইন</h3>
+            <div class="password-input-container">
+                <input type="password" id="adminPasswordInput" class="modal-input" placeholder="এডমিন পাসওয়ার্ড দিন">
+                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility()">👁️</button>
+            </div>
+            <button onclick="verifyAdminPassword()" class="modal-btn-confirm">Login</button>
+            <button onclick="closeAdminLoginModal()" class="modal-btn-cancel">Cancel</button>
+        </div>
+    </div>
+
+    <!-- 🌐 মডার্ন কম্বাইন্ড ফুটার কন্টেন্ট -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <!-- বাম পাশ: আমাদের সম্পর্কে -->
+            <div class="footer-about">
+                <h3>✨ আমাদের সম্পর্কে (About Us)</h3>
+                <p>স্বাগতম KHAN880-এ! আমরা অত্যন্ত সততা ও বিশ্বস্ততার সাথে সারা বাংলাদেশে প্রিমিয়াম কোয়ালিটির গ্যাজেট ও ইলেকট্রনিক্স আইটেম ডেলিভারি দিয়ে আসছি।</p>
+            </div>
+            <!-- ডান পাশ: কন্টাক্ট ও এডমিন অ্যাকশন -->
+            <div class="footer-contact">
+                <h3>📞 যোগাযোগ</h3>
+                <a href="tel:+8801952197007" class="footer-info-link">Hotline: +880 1952-197007</a>
+                <button onclick="openAdminLoginModal()" class="admin-login-btn">⚙️ Admin Log in</button>
+            </div>
+        </div>
+        <!-- কপিরাইট অংশ -->
+        <div class="footer-bottom">
+            &copy; 2026 KHAN880. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // ⏰ রিয়েল-টাইম লাইভ বাংলা ঘড়ি ও ক্যালেন্ডার
+        function updateBanglaClock() {
+            const now = new Date();
+            const banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+            const toBanglaNum = num => String(num).split('').map(d => banglaDigits[d] || d).join('');
+            const days = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+            const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+            let hours = now.getHours();
+            const minutes = toBanglaNum(String(now.getMinutes()).padStart(2, '0'));
+            const seconds = toBanglaNum(String(now.getSeconds()).padStart(2, '0'));
+            const ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+            hours = hours % 12 || 12;
+            document.getElementById('banglaClock').textContent = `${days[now.getDay()]} , ${toBanglaNum(now.getDate())} ${months[now.getMonth()]} , ${toBanglaNum(now.getFullYear())} | ⏰ ${toBanglaNum(String(hours).padStart(2, '0'))}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateBanglaClock, 1000); updateBanglaClock();
+
+        const SHEET_URL = "https://script.google.com/macros/s/AKfycbyR0bgbk5Ne1JOo20EB7nnAHvW1Xv-Us8P126xzfJjTKSrzHluKZwrky-iJIhUPrd-H/exec"; 
+        let allProducts = []; 
+
+        // 📥 শিট থেকে ডাটা রিড করা
+        async function loadProductsFromSheet() {
+            const container = document.getElementById('product-container');
+            const loader = document.getElementById('full-screen-loader');
+            try {
+                const response = await fetch(`${SHEET_URL}?action=getProducts`);
+                allProducts = await response.json();
+                displayProducts(allProducts);
+                if (loader) loader.classList.add('fade-out');
+            } catch (error) {
+                console.error("Error loading products:", error);
+                if (loader) loader.classList.add('fade-out');
+                container.innerHTML = "<div class='error-message'>প্রোডাক্ট ডাটা লোড করা যাচ্ছে না। দয়া করে গুগল শিট ডেপ্লয়মেন্ট বা ইন্টারনেট কানেকশন চেক করুন।</div>";
+            }
+        }
+
+        // 🖥️ ইন্টারফেসে প্রোডাক্ট কার্ড জেনারেট করা
+        function displayProducts(products) {
+            const container = document.getElementById('product-container');
+            container.innerHTML = ""; 
+
+            if (!products || products.length === 0) {
+                container.innerHTML = "<div class='error-message'>কোনো প্রোডাক্ট পাওয়া যায়নি!</div>";
+                return;
+            }
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                const pName = product["Product Name"] || "No Name";
+                const pPrice = product["Price"] || "0";
+                const pDesc = product["Description"] || "";
+                const pImg = product["Product Img"] || "";
+                const pId = product["Product ID"] || "N/A";
+
+                const imgUrl = pImg ? pImg : 'https://via.placeholder.com/300x280?text=No+Image';
+                const safeName = pName.replace(/'/g, "\\'");
+
+                card.innerHTML = `
+                    <div class="product-img-box">
+                        <img src="${imgUrl}" alt="${pName}" onerror="this.src='https://via.placeholder.com/300x280?text=Image+Error';">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">${pName}</h3>
+                        <p class="product-description">${pDesc}</p>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">৳ ${pPrice}</div>
+                        <button class="card-order-btn" onclick="openOrderModal('${safeName}', '${pPrice}', '${pId}')">Order Now</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 📂 ক্যাটাগরি অনুযায়ী ফিল্টারিং সিস্টেম
+        function filterByCategory(category) {
+            if (category === 'all') {
+                displayProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(product => {
+                    const pName = (product["Product Name"] || "").toLowerCase();
+                    const pDesc = (product["Description"] || "").toLowerCase();
+                    return pName.includes(category.toLowerCase()) || pDesc.includes(category.toLowerCase());
+                });
+                displayProducts(filtered);
+            }
+        }
+
+        // 🔍 লাইভ অটো-সাজেশন সার্চবার কন্ট্রোল
+        function setupLiveSearch() {
+            const searchInput = document.getElementById('search-input');
+            const suggestionList = document.getElementById('suggestion-list');
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                suggestionList.innerHTML = "";
+
+                if (searchTerm === "") { suggestionList.style.display = "none"; displayProducts(allProducts); return; }
+
+                const matchedProducts = allProducts.filter(product => {
+                    const pName = (product["Product Name"] || "").toLowerCase();
+                    return pName.includes(searchTerm);
+                });
+
+                if (matchedProducts.length > 0) {
+                    suggestionList.style.display = "block";
+                    matchedProducts.slice(0, 5).forEach(product => {
+                        const li = document.createElement('li');
+                        li.className = 'suggestion-item';
+                        const pName = product["Product Name"] || "No Name";
+                        li.innerHTML = `<span>${pName}</span>`;
+                        li.addEventListener('click', () => { searchInput.value = pName; suggestionList.style.display = "none"; displayProducts([product]); });
+                        suggestionList.appendChild(li);
+                    });
+                } else { suggestionList.style.display = "none"; displayProducts([]); }
+            });
+        }
+
+        // 🛒 মডাল অ্যাকশনস
+        function openOrderModal(name, price, id) {
+            document.getElementById('productName').value = name;
+            document.getElementById('productPrice').value = price;
+            document.getElementById('productId').value = id;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
+
+        // 📱 হোয়াটসঅ্যাপে মেসেজ পাঠানো
+        function sendToWhatsApp() {
+            const pName = document.getElementById('productName').value;
+            const pPrice = document.getElementById('productPrice').value;
+            const pId = document.getElementById('productId').value;
+            const cName = document.getElementById('custName').value.trim();
+            const cPhone = document.getElementById('custPhone').value.trim();
+            const cDistrict = document.getElementById('custDistrict').value.trim();
+            const cUpazila = document.getElementById('custUpazila').value.trim();
+            const cNote = document.getElementById('custNote').value.trim();
+
+            if (!cName || !cPhone || !cDistrict || !cUpazila) { alert("দয়া করে প্রয়োজনীয় সব তথ্য পূরণ করুন!"); return; }
+
+            const msg = `*KHAN880 - নতুন অর্ডার!* 🛍️\n\n*প্রোডাক্ট ডিটেইলস:*\n------------------\n🆔 আইডি: ${pId}\n📦 নাম: ${pName}\n💰 মূল্য: ৳ ${pPrice}\n\n*কাস্টমার ডিটেইলস:*\n------------------\n👤 নাম: ${cName}\n📞 মোবাইল: ${cPhone}\n📍 জেলা: ${cDistrict}\n🏡 উপজেলা: ${cUpazila}\n📝 নোট: ${cNote ? cNote : 'নেই'}`;
+            window.open(`https://wa.me/8801952197007?text=${encodeURIComponent(msg)}`, '_blank');
+            closeModal();
+        }
+
+        // 🔒 এডমিন মডাল হ্যান্ডলিং ফাংশনসমূহ
+        function openAdminLoginModal() {
+            const passwordInput = document.getElementById('adminPasswordInput');
+            passwordInput.value = "";
+            passwordInput.type = "password";
+            document.getElementById('adminLoginModal').style.display = 'flex';
+        }
+
+        // ক্লোজ এডমিন লগইন মডাল
+        function closeAdminLoginModal() {
+            document.getElementById('adminLoginModal').style.display = 'none';
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('adminPasswordInput');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+
+        function verifyAdminPassword() {
+            const password = document.getElementById('adminPasswordInput').value;
+            if (password === "Ayra@2024") {
+                closeAdminLoginModal();
+                document.getElementById('adminPortal').style.display = 'block';
+                document.getElementById('adminPortal').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert("ভুল পাসওয়ার্ড!");
+            }
+        }
+
+        function closeAdminPortal() { document.getElementById('adminPortal').style.display = 'none'; }
+
+        // 🕵️‍♂️ পাসপোর্ট সার্চ ফাংশন
+        async function searchPassportData() {
+            const passportNum = document.getElementById('passportSearchInput').value.trim().toUpperCase();
+            if (!passportNum) return;
+            try {
+                const response = await fetch(`${SHEET_URL}?action=searchPassport&passport=${encodeURIComponent(passportNum)}`);
+                const result = await response.json();
+                if (result.status === "success") {
+                    const rowData = result.data;
+                    document.getElementById('sheetRowIndex').value = rowData.rowIndex;
+                    document.getElementById('mpName').value = rowData["Name"] || '';
+                    document.getElementById('mpPassport').value = rowData["Passport number"] || passportNum;
+                    document.getElementById('mpAgent').value = rowData["Agent"] || '';
+                    document.getElementById('mpCompany').value = rowData["Company Name"] || '';
+                    document.getElementById('mpMedical').value = rowData["Medical Status"] || '';
+                    document.getElementById('mpVisa').value = rowData["Visa"] || '';
+                    document.getElementById('mpFlight').value = rowData["Flight Date"] || '';
+                    document.getElementById('mpPayment').value = rowData["Payment"] || '';
+                    document.getElementById('mpField1').value = rowData["Field 1"] || rowData["Remarks"] || '';
+                    document.getElementById('mpField2').value = rowData["Field 2"] || '';
+                    document.getElementById('mpField3').value = rowData["Field 3"] || '';
+                    document.getElementById('mpField4').value = rowData["Field 4"] || '';
+                    document.getElementById('mpField5').value = rowData["Field 5"] || '';
+                    document.getElementById('manpowerForm').style.display = 'grid';
+                } else { alert("তথ্য পাওয়া যায়নি!"); }
+            } catch (e) { alert("সার্চ করতে সমস্যা হয়েছে!"); }
+        }
+
+        // 💾 এডিটেড ম্যানপাওয়ার ডাটা ব্যাক-আপ পাঠানো
+        async function updatePassportData() {
+            const rowIndex = document.getElementById('sheetRowIndex').value;
+            const updatedInfo = {
+                "Name": document.getElementById('mpName').value,
+                "Passport number": document.getElementById('mpPassport').value,
+                "Agent": document.getElementById('mpAgent').value,
+                "Company Name": document.getElementById('mpCompany').value,
+                "Medical Status": document.getElementById('mpMedical').value,
+                "Visa": document.getElementById('mpVisa').value,
+                "Flight Date": document.getElementById('mpFlight').value,
+                "Payment": document.getElementById('mpPayment').value,
+                "Field 1": document.getElementById('mpField1').value,
+                "Field 2": document.getElementById('mpField2').value,
+                "Field 3": document.getElementById('mpField3').value,
+                "Field 4": document.getElementById('mpField4').value,
+                "Field 5": document.getElementById('mpField5').value
+            };
+            try {
+                const response = await fetch(SHEET_URL, { method: "POST", body: JSON.stringify({ action: "updateManpower", rowIndex: rowIndex, data: updatedInfo }) });
+                const result = await response.json();
+                if (result.status === "success") alert("সফলভাবে শিটে আপডেট হয়েছে!");
+            } catch (e) { alert("আপডেট ব্যর্থ হয়েছে!"); }
+        }
+
+        // 🚀 উইন্ডো স্টার্টআপ লিসেনার
+        window.onload = function() { loadProductsFromSheet(); setupLiveSearch(); };
+    </script>
+</body>
+</html>
